@@ -1,0 +1,23 @@
+{
+  "name": "oauth2_jwt",
+  "version": "1.0.0",
+  "description": "Implementação do protocolo OAuth2 com Json Web Token",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Security",
+    "JWT",
+    "OAuth2"
+  ],
+  "author": "Gustavo Barbosa",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "consign": "^0.1.6",
+    "express": "^4.16.2",
+    "express-validator": "^5.0.1",
+    "mysql": "^2.15.0"
+  }
+}
