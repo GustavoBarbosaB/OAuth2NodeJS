@@ -15,4 +15,6 @@ class user{
   }
 }
 
-module.exports = new user();
+module.exports = function(){
+  return new user();
+}

@@ -8,8 +8,8 @@ module.exports = function(){
   app.use(bodyParser.json());
 
   consign({cwd:'app'})
-    .include('controller')
-    .then('domain')
+    .include('domain')
+    .then('controller')
     .into(app);
 
   return app;
