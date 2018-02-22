@@ -1,6 +1,9 @@
-var app = require(`./config/express`)();
-var http = require(`http`).Server(app);
+const port = 8080;
+const portEnv = process.env.PORT;
+const app = require(`./config/express`)();
 
-http.listen(process.env.PORT || 3000,function(){
-  console.log(`Servidor funcionando!`);
+const http = require(`http`).Server(app);
+
+http.listen(portEnv || port,()=>{
+  console.log(`Servidor funcionando nas portas`+ port +`ou` + portEnv+`!`);
 });

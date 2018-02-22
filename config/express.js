@@ -1,16 +1,14 @@
-var express =  require(`express`);
-var consign =  require(`consign`);
-var bodyParser =  require(`body-parser`);
+const mySqlConnection = require('../dbHelper/mySQLHelper');
+const bearerTokensDBHelper = require('')(mySqlConnection);
+const userDBHelper = require()(mySqlConnection);
+const bodyParser = require('body-parser');
+const express = require('express');
 
 module.exports = function(){
   var app = express();
 
+  app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
-
-  consign({cwd:'app'})
-    .include('domain')
-    .then('controller')
-    .into(app);
 
   return app;
 }
