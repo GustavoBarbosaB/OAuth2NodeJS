@@ -2,7 +2,7 @@
   "name": "oauth2_jwt",
   "version": "1.0.0",
   "description": "Implementação do protocolo OAuth2 com Json Web Token",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,10 +15,9 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
-    "consign": "^0.1.6",
     "express": "^4.16.2",
     "express-validator": "^5.0.1",
-    "mongoose": "^5.0.6",
-    "mysql": "^2.15.0"
+    "mysql": "^2.15.0",
+    "node-oauth2-server": "^2.4.0"
   }
 }
