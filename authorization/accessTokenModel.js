@@ -48,7 +48,7 @@ function getAccessToken(bearerToken, callback){
         id: userID,
       },
       expires: null
-    }
+    };
 
     //set the error to true if userID is null, and pass in the token if there is a userID else pass null
     callback(userID == null ? true : false, userID == null ? null : accessToken)
@@ -62,5 +62,5 @@ function createAccessTokenFrom(userID) {
             id: userID,
         },
         expires: null
-    })
+    });
 }

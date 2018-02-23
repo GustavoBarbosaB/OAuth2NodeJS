@@ -31,7 +31,7 @@ function getUserFromCredentials(username, password, callback) {
   });
 }
 
-function doesUserExist(username) {
+function doesUserExist(username,callback) {
 
   const doesUserExistQuery = `SELECT * FROM users WHERE username = '${username}'`;
 
