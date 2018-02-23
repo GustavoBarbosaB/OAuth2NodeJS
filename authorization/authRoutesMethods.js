@@ -20,7 +20,7 @@ function registerUser(req,res){
        return sendResponse(res, "Invalid Credentials", true)
    }
 
-   userDBHelper.doesUserExist(req.body.username, (sqlError, doesUserExist) => {
+   userDBHelper.doesUserExist(username, (sqlError, doesUserExist) => {
 
       //check if the user exists
       if (sqlError !== null || doesUserExist){
@@ -35,7 +35,7 @@ function registerUser(req,res){
 
         return
       }
-     userDBHelper.registerUserInDB(req.body.username, req.body.password, dataResponseObject => {
+     userDBHelper.registerUserInDB(username, req.body.password, dataResponseObject => {
 
        //create message for the api response
        const message =  dataResponseObject.error === null  ? "Registro feito com sucesso" : "Falha ao registrar usuário"
@@ -59,6 +59,8 @@ function sendResponse(res,message,error){
         });
 
 }
+
+
 
 function isString(parameter) {
 

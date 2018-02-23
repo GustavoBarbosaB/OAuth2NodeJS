@@ -21,10 +21,18 @@ const authRoutesMethods = require('../authorization/authRoutesMethods')
 const authRouter = require('../authorization/authRouter')
                                           (express.Router(),app,authRoutesMethods);
 
+const restrictedAreaRoutesMethods = require('../restrictedArea/restrictedAreaRoutesMethods');
+
+const restrictedAreaRoutesConstructor = require('../restrictedArea/restrictedAreaRoutes');
+
+const restrictedAreaRouter = restrictedAreaRoutesConstructor(express.Router(),app,restrictedAreaRoutesMethods);
 
 module.exports = function(){
+
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use('/restrictedArea',restrictedAreaRouter);
   app.use(app.oauth.errorHandler());
   app.use('/auth',authRouter);
+
   return app;
 };

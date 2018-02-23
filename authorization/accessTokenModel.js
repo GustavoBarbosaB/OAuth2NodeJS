@@ -16,16 +16,24 @@ module.exports = (injectedUserDBHelper,injectAccesTokensDBHelper) => {
 
 function getClient(clientID,clientSecret,callback){
   const client = {
-    clientID,
-    clientSecret,
+    clientID:clientID,
+    clientSecret:clientSecret,
     grants:null,
     redirectUris:null
   }
-  callback(false,client);
+  if(clientID==='client' && clientSecret==='secret')
+    callback(false,client);
+  else {
+    callback(true,client);
+  }
+
+  console.log('The client is: ',clientID,' and secret is: ',clientSecret);
+
 }
 
 function grantTypeAllowed(clientID, grantType, callback){
   console.log('grantTypeAllowed called and clientID is: ', clientID, ' and grantType is: ', grantType);
+
   callback(false,true);
 }
 
