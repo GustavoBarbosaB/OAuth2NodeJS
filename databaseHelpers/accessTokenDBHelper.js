@@ -6,6 +6,7 @@ module.exports = injectedMySqlConnection => {
 
   return {
    saveAccessToken: saveAccessToken,
+   saveRefreshToken: saveAccessToken,
    getUserIDFromBearerToken: getUserIDFromBearerToken
  };
 }
@@ -18,6 +19,16 @@ function saveAccessToken(accessToken, userID, callback) {
       callback(dataResponseObject.error)
   });
 }
+
+function saveRefreshToken(refreshToken, userID, callback) {
+
+  const getUserQuery =  `INSERT INTO refresh_tokens (refresh_token, user_id) VALUES ("${refreshToken}", ${userID}) ON DUPLICATE KEY UPDATE access_token = "${accessToken}";`
+
+  mySqlConnection.query(getUserQuery, (dataResponseObject) => {
+      callback(dataResponseObject.error)
+  });
+}
+
 
 function getUserIDFromBearerToken(bearerToken, callback){
 

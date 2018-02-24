@@ -10,7 +10,9 @@ module.exports = (injectedUserDBHelper,injectAccesTokensDBHelper) => {
       grantTypeAllowed: grantTypeAllowed,
       getUser: getUser,
       saveAccessToken: saveAccessToken,
-      getAccessToken: getAccessToken
+      getAccessToken: getAccessToken,
+      getRefreshToken: getRefreshToken,
+      saveRefreshToken: saveRefreshToken
   };
 }
 
@@ -21,12 +23,7 @@ function getClient(clientID,clientSecret,callback){
     grants:null,
     redirectUris:null
   }
-  // if(clientID==='client' && clientSecret==='secret')
-  //
-  // else {
-  //   callback(true,client);
-  // }
-callback(false,client);
+  callback(false,client);
   console.log('The client is: ',clientID,' and secret is: ',clientSecret);
 
 }
@@ -55,7 +52,7 @@ function getAccessToken(bearerToken, callback){
       user: {
         id: userID,
       },
-      expires: null
+      expires: 5*3600
     };
 
     //set the error to true if userID is null, and pass in the token if there is a userID else pass null
@@ -63,12 +60,33 @@ function getAccessToken(bearerToken, callback){
   });
 }
 
-function createAccessTokenFrom(userID) {
-
-    return Promise.resolve({
-        user: {
-            id: userID,
-        },
-        expires: null
-    });
+function getRefreshToken(refreshToken,callback){
+  console.log('entrou aqui brother!');
+  const refreshToken = {
+    user: {
+      id: 1,
+    },
+    expires: 5*3600
+  };
+  callback(true,refreshToken);
 }
+
+function saveRefreshToken(refreshToken, clientID, expires, user, callback){
+  console.log('user_id is:',user.user_id);
+  accessTokensDBHelper.saveRefreshToken(refreshToken, user.user_id, callback);
+}
+
+
+//
+// function createAccessTokenFrom(userID) {
+//   console.log('TESTANDO RESPOSTA');
+//
+//     return new Promise( resolve =>{
+//       resolve({
+//           user: {
+//               id: userID,
+//           },
+//           expires: null
+//       });
+//     })
+// }
