@@ -21,12 +21,12 @@ function getClient(clientID,clientSecret,callback){
     grants:null,
     redirectUris:null
   }
-  if(clientID==='client' && clientSecret==='secret')
-    callback(false,client);
-  else {
-    callback(true,client);
-  }
-
+  // if(clientID==='client' && clientSecret==='secret')
+  //
+  // else {
+  //   callback(true,client);
+  // }
+callback(false,client);
   console.log('The client is: ',clientID,' and secret is: ',clientSecret);
 
 }

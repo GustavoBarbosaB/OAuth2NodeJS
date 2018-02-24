@@ -11,26 +11,27 @@ const oAuthModel = require('../authorization/accessTokenModel')
 
 app.oauth = oAuth2Server({
     model: oAuthModel,
-    grants: ['password'],
+    accessTokenLifetime: 10,
+    grants: ['password','refresh_token'],
     debug: true
 })
 
+//Criação dos midlewares para as rotas do oauth2
 const authRoutesMethods = require('../authorization/authRoutesMethods')
                                           (userDBHelper);
 
 const authRouter = require('../authorization/authRouter')
                                           (express.Router(),app,authRoutesMethods);
 
+//Criação dos midlewares para as rotas protegidas pelo oAuth2
 const restrictedAreaRoutesMethods = require('../restrictedArea/restrictedAreaRoutesMethods');
 
-const restrictedAreaRoutesConstructor = require('../restrictedArea/restrictedAreaRoutes');
-
-const restrictedAreaRouter = restrictedAreaRoutesConstructor(express.Router(),app,restrictedAreaRoutesMethods);
+const restrictedAreaRoutes = require('../restrictedArea/restrictedAreaRoutes')(express.Router(),app,restrictedAreaRoutesMethods);
 
 module.exports = function(){
 
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use('/restrictedArea',restrictedAreaRouter);
+  app.use('/restrictedArea',restrictedAreaRoutes);
   app.use(app.oauth.errorHandler());
   app.use('/auth',authRouter);
 
