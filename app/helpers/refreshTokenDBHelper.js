@@ -26,11 +26,11 @@ function saveRefreshToken(refreshToken,expires,userID) {
 
 function findRefreshToken(refreshToken){
     const getUserIDQuery = `SELECT * FROM refresh_tokens WHERE refresh_token = '${refreshToken}';`
-    //console.log('findRefreshToken: ',getUserIDQuery);
+    console.log('findRefreshToken: ',getUserIDQuery);
     return mySqlConnection.query(getUserIDQuery)
         .then(result=>{
             //console.log('Resultado:',result.length===0);
-            return Promise.resolve(result !== null && result.length!==0 ? result[0] : null);
+            return Promise.resolve(result !== null ? result[0] : null);
         })
         .catch(err=>{
             return Promise.reject(err);

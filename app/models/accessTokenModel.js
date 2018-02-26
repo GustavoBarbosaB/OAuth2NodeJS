@@ -43,7 +43,7 @@ function getUser(username, password){
   return userDBHelper.getUserFromCredentials(username, password)
     .then(result=>{
       console.log('Usuario ',result.username,' encontrado!');
-      return result;
+      return result.user_id;
     })
     .catch(error=>{
       console.log('getUser error: ',error);
@@ -56,17 +56,17 @@ método que irá salvar a refreshToken e a accessToken.
 TUDO CERTO!!!
 **/
 function saveToken(token, client, user){
-  console.log('user_id is:',user.id);
+  console.log('user is:',user);
 
   return Promise.all([
     accessTokensDBHelper
       .saveAccessTokens(token.accessToken,
                        token.accessTokenExpiresAt,
-                       user.id),
+                       user),
     refreshTokensDBHelper
       .saveRefreshToken(token.refreshToken,
                         token.refreshTokenExpiresAt,
-                        user.id)
+                        user)
   ]).then(response=>{
       console.log(response);
       return ({
@@ -91,18 +91,17 @@ retornaremos a mesma.
 TUDO CERTO!!
 **/
 function getAccessToken(bearerToken){
-    console.log('entrouaqui');
   return accessTokensDBHelper
     .getUserIDFromBearerToken(bearerToken)
           .then(accessToken=>{
-              //console.log(accessToken);
+            console.log(accessToken);
             if(!accessToken) return false;
             return {
                 accessToken: accessToken.access_token,
                 accessTokenExpiresAt: accessToken.expires,
-                scope:['read','write'],
-                user: accessToken.user_id,
-                client:'client'
+                client:{id:'client'},
+                user:accessToken.user_id,
+                scope:['read','write']
             }
           })
           .catch(error =>{
@@ -116,7 +115,7 @@ Aqui consultaremos se existe a refreshToken em questão
 TUDO CERTO!
 **/
 function getRefreshToken(refreshToken){
-  if(!refreshToken || refreshToken==='undefined') return false;
+   if(!refreshToken || refreshToken==='undefined') return false;
   return refreshTokensDBHelper
     .findRefreshToken(refreshToken)
     .then(result=>{
@@ -125,7 +124,7 @@ function getRefreshToken(refreshToken){
         refreshToken: result.refresh_token,
         refreshTokenExpiresAt: result.expires,
         client:{id:'client'},
-        user:{id:result.user_id},
+        user:result.user_id,
         scope:['read','write']
       };
 
