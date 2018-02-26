@@ -1,5 +1,5 @@
 module.exports = (router, app, restrictedAreaRoutesMethods)=>{
-    router.post('/teste',app.oauth.authenticate(),restrictedAreaRoutesMethods.accessRestrictedArea);
+    router.get('/teste',app.oauth.authenticate(),restrictedAreaRoutesMethods.accessRestrictedArea);
 
     return router;
 }

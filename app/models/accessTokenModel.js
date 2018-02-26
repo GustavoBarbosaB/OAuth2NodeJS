@@ -56,17 +56,17 @@ método que irá salvar a refreshToken e a accessToken.
 TUDO CERTO!!!
 **/
 function saveToken(token, client, user){
-  console.log('user_id is:',user.user_id);
+  console.log('user_id is:',user.id);
 
   return Promise.all([
     accessTokensDBHelper
       .saveAccessTokens(token.accessToken,
                        token.accessTokenExpiresAt,
-                       user.user_id),
+                       user.id),
     refreshTokensDBHelper
       .saveRefreshToken(token.refreshToken,
                         token.refreshTokenExpiresAt,
-                        user.user_id)
+                        user.id)
   ]).then(response=>{
       console.log(response);
       return ({
@@ -92,11 +92,11 @@ TUDO CERTO!!
 **/
 function getAccessToken(bearerToken){
     console.log('entrouaqui');
-   accessTokensDBHelper
+  return accessTokensDBHelper
     .getUserIDFromBearerToken(bearerToken)
           .then(accessToken=>{
+              //console.log(accessToken);
             if(!accessToken) return false;
-            console.log(accessToken);
             return {
                 accessToken: accessToken.access_token,
                 accessTokenExpiresAt: accessToken.expires,
@@ -120,11 +120,12 @@ function getRefreshToken(refreshToken){
   return refreshTokensDBHelper
     .findRefreshToken(refreshToken)
     .then(result=>{
+        console.log('getRefreshToken: ',result);
       return {
         refreshToken: result.refresh_token,
         refreshTokenExpiresAt: result.expires,
-        client:'client',
-        user:result.user_id,
+        client:{id:'client'},
+        user:{id:result.user_id},
         scope:['read','write']
       };
 
@@ -139,8 +140,9 @@ Aqui revogamos as tokens criadas.
 TUDO CERTO!
 **/
 function revokeToken(token) {
+    console.log('revokeToken: ',token);
   return refreshTokensDBHelper
-    .deleteRefreshToken(token)
+    .deleteRefreshToken(token.refreshToken)
     .then(result=>{
       return !!result;
   }).catch(function (err) {

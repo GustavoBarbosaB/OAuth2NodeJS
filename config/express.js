@@ -37,9 +37,9 @@ const restrictedAreaRoutes = require(baseRoutes+'restrictedAreaRoutes')(express.
 
 module.exports = function(){
 
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use('/auth',authRouter);
-  app.use('/restrictedArea',restrictedAreaRoutes);
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use('/oauth',authRouter);
+    app.use('/restrictedArea',restrictedAreaRoutes);
 
   return app;
 }

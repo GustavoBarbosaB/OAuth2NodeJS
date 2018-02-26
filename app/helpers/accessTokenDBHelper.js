@@ -31,10 +31,11 @@ function saveAccessTokens(accessToken,expires, userID) {
 
 function getUserIDFromBearerToken(bearerToken){
     const getUserIDQuery = `SELECT * FROM access_tokens WHERE access_token = '${bearerToken}';`;
-    console.log('getUserIDFromBearerToken ',query);
+    console.log('getUserIDFromBearerToken ',getUserIDQuery);
     return mySqlConnection.query(getUserIDQuery)
         .then(accessToken=>{
-            return Promise.resolve(accessToken !== null && accessToken.length === 1 ? accessToken[0] : null);
+            console.log('Resultado da consulta: ',accessToken);
+            return Promise.resolve(accessToken !== null ? accessToken[0] : null);
         }).catch(err=>{
             console.log('getUserIDFromBearerToken error', err);
             return Promise.reject(err);

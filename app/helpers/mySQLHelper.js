@@ -19,7 +19,7 @@ function initConnection() {
 function query(queryString){
 
     return new Promise((resolve,reject)=>{
-        new initConnection();
+        initConnection();
         connection.query(queryString, function(error, results, fields){
             if(error) return reject(error);
             resolve(results === undefined ? null : results === null ? null : results);

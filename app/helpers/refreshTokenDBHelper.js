@@ -26,9 +26,11 @@ function saveRefreshToken(refreshToken,expires,userID) {
 
 function findRefreshToken(refreshToken){
     const getUserIDQuery = `SELECT * FROM refresh_tokens WHERE refresh_token = '${refreshToken}';`
+    //console.log('findRefreshToken: ',getUserIDQuery);
     return mySqlConnection.query(getUserIDQuery)
         .then(result=>{
-            return Promise.resolve(result != null && result.length === 1 ? result[0] : null);
+            //console.log('Resultado:',result.length===0);
+            return Promise.resolve(result !== null && result.length!==0 ? result[0] : null);
         })
         .catch(err=>{
             return Promise.reject(err);
@@ -37,6 +39,7 @@ function findRefreshToken(refreshToken){
 
 function deleteRefreshToken(refreshToken){
     const getUserIDQuery = `DELETE FROM refresh_tokens WHERE refresh_token = '${refreshToken}';`
+    console.log('deleteRefreshToken:',getUserIDQuery);
     return mySqlConnection.query(getUserIDQuery)
         .then(result=>{
             return Promise.resolve(result);

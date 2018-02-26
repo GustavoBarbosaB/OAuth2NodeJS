@@ -47,7 +47,7 @@ function registerUser(req,res){
 
 
 function login(req, res, next) {
-
+    console.log('entrou aqui tbm!');
 }
 
 
