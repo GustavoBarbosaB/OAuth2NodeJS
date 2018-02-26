@@ -1,7 +1,8 @@
-const port = 8080;
-const portEnv = process.env.PORT;
+const port = 8080||process.env.PORT;
 const app = require(`./config/express`)();
+app.set('port', port);
 
-app.listen(portEnv || port,()=>{
-  console.log(`Servidor funcionando nas portas `+ port +` ou ` + portEnv+`!`);
-});
+app.listen(port,()=>{
+  console.log('Servidor funcionando nas portas', port);
+})
+

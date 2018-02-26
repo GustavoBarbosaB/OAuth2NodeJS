@@ -1,39 +1,46 @@
-const mySqlConnection = require('../databaseHelpers/mySQLHelper');
-const bearerTokensDBHelper = require('../databaseHelpers/accessTokenDBHelper')(mySqlConnection);
-const userDBHelper = require('../databaseHelpers/userDBHelper')(mySqlConnection);
+// Diretorios
+const baseDir = '../app/';
+const baseHelper = baseDir+'helpers/';
+const baseModel = baseDir+'models/';
+const baseRoutes = baseDir+'routes/';
+const baseRoutesMethod = baseRoutes+'methods/';
+//-------------------------------------------
+
+const mySqlConnection = require(baseHelper+'mySQLHelper');
+const bearerTokensDBHelper = require(baseHelper+'accessTokenDBHelper')(mySqlConnection);
+const refreshTokensDBHelper = require(baseHelper+'refreshTokenDBHelper')(mySqlConnection);
+const userDBHelper = require(baseHelper+'userDBHelper')(mySqlConnection);
 const bodyParser = require('body-parser');
 const express = require('express');
-//const expressValidator = require('express-validator');
 const app = express();
-const oAuth2Server = require('oauth2-server');
-const oAuthModel = require('../authorization/accessTokenModel')
-                                          (userDBHelper,bearerTokensDBHelper);
+const OAuth2Server = require('express-oauth-server');
+const oAuthModel = require(baseModel+'accessTokenModel')
+                                          (userDBHelper,bearerTokensDBHelper,refreshTokensDBHelper);
 
-app.oauth = oAuth2Server({
-    model: oAuthModel,
-    accessTokenLifetime: 60*60*5,//5hours
-    grants: ['password','refresh_token'],
-    debug: true
+app.oauth = new OAuth2Server({
+    model: oAuthModel
 })
 
 //Criação das instancias para as rotas do oauth2
-const authRoutesMethods = require('../authorization/authRoutesMethods')
+const authRoutesMethods = require(baseRoutesMethod+'authRoutesMethods')
                                           (userDBHelper);
 
-const authRouter = require('../authorization/authRouter')
+const authRouter = require(baseRoutes+'authRouter')
                                           (express.Router(),app,authRoutesMethods);
 
 //Criação das instancias para as rotas protegidas pelo oAuth2
-const restrictedAreaRoutesMethods = require('../restrictedArea/restrictedAreaRoutesMethods');
+const restrictedAreaRoutesMethods = require(baseRoutesMethod+'restrictedAreaRoutesMethods');
 
-const restrictedAreaRoutes = require('../restrictedArea/restrictedAreaRoutes')(express.Router(),app,restrictedAreaRoutesMethods);
+const restrictedAreaRoutes = require(baseRoutes+'restrictedAreaRoutes')(express.Router(),app,restrictedAreaRoutesMethods);
+
+
 
 module.exports = function(){
 
   app.use(bodyParser.urlencoded({ extended: true }));
-  app.use('/restrictedArea',restrictedAreaRoutes);
-  app.use(app.oauth.errorHandler());
   app.use('/auth',authRouter);
+  app.use('/restrictedArea',restrictedAreaRoutes);
 
   return app;
-};
+}
+

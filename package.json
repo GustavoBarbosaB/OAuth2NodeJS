@@ -8,16 +8,21 @@
   },
   "keywords": [
     "Security",
-    "JWT",
     "OAuth2"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/GustavoBarbosaB/OAuth2NodeJS.git"
+  },
   "author": "Gustavo Barbosa",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "dateformat": "^3.0.3",
     "express": "^4.16.2",
+    "express-oauth-server": "^2.0.0",
     "express-validator": "^5.0.1",
     "mysql": "^2.15.0",
-    "oauth2-server": "^2.4.1"
+    "oauth2-server": "^3.0.0"
   }
 }
