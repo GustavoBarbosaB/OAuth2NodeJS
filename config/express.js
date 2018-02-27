@@ -39,7 +39,7 @@ module.exports = function(){
 
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use('/oauth',authRouter);
-    app.use('/restrictedArea',restrictedAreaRoutes);
+    app.use('/restrito',restrictedAreaRoutes);
 
   return app;
 }

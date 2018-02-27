@@ -3,6 +3,9 @@ module.exports = {
 }
 
 function accessRestrictedArea(req,res){
-  res.send('Você acessou tranquilamente!');
+  let body = req.header('Authorization');
+  console.log('body: ',body);
+  res.cookie(body);
+  res.send('Você acessou tranquilamente:');
 
 }
